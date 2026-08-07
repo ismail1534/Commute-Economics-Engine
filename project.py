@@ -4,20 +4,17 @@ import requests
 
 
 class Vehicle:
-    """Stores a vehicle's name and fuel efficiency."""
     def __init__(self, name, efficiency):
         self.name = name
         self.efficiency = float(efficiency) 
 
 class Commute:
-    """Pairs a vehicle with a daily distance and fuel price."""
     def __init__(self, vehicle, daily_km, fuel_price):
         self.vehicle = vehicle
         self.daily_km = float(daily_km)
         self.fuel_price = float(fuel_price)
 
     def daily_cost(self):
-        """Returns cost of one day's commute."""
         return calculate_daily_cost(self.daily_km, self.vehicle.efficiency, self.fuel_price)
 
 
