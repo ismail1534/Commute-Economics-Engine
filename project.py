@@ -35,15 +35,18 @@ def get_fuel_price():
    
     FALLBACK_PRICE = 262.0 
 
-    try:
-        response = requests.get("https://open.er-api.com/v6/latest/USD", timeout=5)
-        data = response.json()
-
-        if data.get("result") == "success":
-            usd_to_pkr = data["rates"]["PKR"]
-            estimated = round(0.70 * usd_to_pkr, 2)
-            print(f"  (Live rate: 1 USD = Rs. {usd_to_pkr})")
-            return estimated
+     try:
+        import re
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+        }
+        response = requests.get("https://www.pakwheels.com/petroleum-prices-in-pakistan", headers=headers, timeout=10)
+        
+        match = re.search(r'<td>\s*Petrol \(Super\)\s*</td>\s*<td>\s*PKR\s*([0-9.]+)\s*</td>\s*<td>\s*PKR\s*([0-9.]+)\s*</td>', response.text, re.IGNORECASE | re.DOTALL)
+        if match:
+            new_price = float(match.group(2))
+            print(f"  (Live rate: Petrol (Super) = Rs. {new_price})")
+            return new_price
 
     except Exception:
         pass
